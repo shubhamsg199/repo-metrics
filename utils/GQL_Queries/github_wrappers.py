@@ -3,6 +3,7 @@ from datetime import datetime
 from datetime import timedelta
 
 import attr
+import click
 from box import Box
 from cached_property import cached_property
 from gql import Client as GqlClient
@@ -438,9 +439,10 @@ class OrgWrapper:
         """Get the logins for the given team"""
         with self.gql_client.session as gql_session:
             gql_data = gql_session.execute(
-                gql(contributors_query.org_team_members_query),
+                gql(contributors_query.contributions_counts_by_org_members_query),
                 variable_values={"organization": self.name, "team": team},
             )
+        click.echo(gql_data)
         return [
             u["login"] for u in gql_data["organization"]["team"]["members"]["nodes"]
         ]
@@ -498,4 +500,5 @@ class UserWrapper:
                     ] = repo_cont.contributions.totalCount
             else:  # some are empty lists
                 flattened_counts[short_type] = {}
+        # click.echo(flattened_counts)
         return flattened_counts

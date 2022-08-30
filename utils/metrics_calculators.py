@@ -6,6 +6,7 @@ from statistics import fmean
 from statistics import median
 from statistics import pstdev
 
+import click
 from box import Box
 from dateutil.rrule import rrule
 from dateutil.rrule import WEEKLY
@@ -192,16 +193,24 @@ def contributor_actions(user, num_weeks):
         # want:
         # {'week': [from0, from1, from2]
         #  'pullRequest': [{'repo': 1}, {}, {'other': 2}]}
+        click.echo(user_contributions)
+        total_commits = 0
+        total_pr_reviews = 0
+        for commit in user_contributions['commit'].values():
+            total_commits += (commit if commit else 0)
+        for review in user_contributions['pullRequestReview'].values():
+            total_pr_reviews += (review if review else 0)
+        click.echo(total_commits)
+        click.echo(total_pr_reviews)
 
         dated_counts["week"].append(from_date.strftime(DATE_FMT))
 
-        for cont_type, cont_repos in user_contributions.items():
-            # Convert the raw value dicts to table cell values
-            if cont_repos:
-                dated_counts[cont_type].append(
-                    "\n".join(f"{r}: {c}" for r, c in cont_repos.items())
-                )
-            else:
-                dated_counts[cont_type].append("---")
-
-    return dated_counts
+        # for cont_type, cont_repos in user_contributions.items():
+        #     # Convert the raw value dicts to table cell values
+        #     if cont_repos:
+        #         dated_counts[cont_type].append(
+        #             "\n".join(f"{r}: {c}" for r, c in cont_repos.items())
+        #         )
+        #     else:
+        #         dated_counts[cont_type].append("---")
+    return Box(date =(dated_counts['week'][0]), pr_review = total_pr_reviews, commit = total_commits)
