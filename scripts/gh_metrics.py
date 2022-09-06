@@ -97,8 +97,6 @@ def repo_pr_metrics(org, repo, output_file_prefix, pr_count, table_format):
         click.echo(
             tabulate(pr_metrics, headers="keys", tablefmt=table_format, floatfmt=".1f")
         )
-        click.echo(pr_metrics)
-        click.echo(stat_metrics)
 
         header = f"Review Metric Statistics for [{repo_name}]"
         click.echo(f"\n{'-' * len(header)}")
@@ -208,7 +206,7 @@ def contributor_actions(org, output_file_prefix, team, num_weeks, table_format, 
     """Collect count metrics of various contribution types"""
 
     orgwrap = OrgWrapper(name=org)
-    click.echo(orgwrap)
+
     collected_users = []
 
     if not (user or team):
@@ -221,7 +219,7 @@ def contributor_actions(org, output_file_prefix, team, num_weeks, table_format, 
         team_members = orgwrap.team_members(team=team_name)
         click.echo(f"Team members for {org}/{team_name}:\n" + "\n".join(team_members))
         collaborators.extend(team_members)
-        click.echo(team_members)
+
     # maybe drop this into an OrgWrapper function
     # replacing the function label here in the loop
     for user in collaborators:
@@ -231,31 +229,24 @@ def contributor_actions(org, output_file_prefix, team, num_weeks, table_format, 
         else:
             click.echo(f"Skipping user (member of multiple teams): {user}")
         # collect metrics for the given user if not already covered by another team
-        click.echo(collected_users)
         contributor_counts = metrics_calculators.contributor_actions(
             user=user, num_weeks=num_weeks
         )
-        click.echo(contributor_counts)
-        # click.echo(contributor_counts['week'])
-        # click.echo(contributor_counts['pullRequest'])
-        # click.echo(contributor_counts['pullRequestReview'])
-        # click.echo(contributor_counts['commit'])
 
-        # header = f"Contributions by week for [{user}]"
-        # click.echo(f"\n{'-' * len(header)}")
-        # click.echo(header)
-        # click.echo("-" * len(header))
-        # click.echo(tabulate(contributor_counts, tablefmt=table_format, headers="keys"))
-        #
-        # # click.echo(METRICS_OUTPUT)
-        # user_metrics_filename = METRICS_OUTPUT.joinpath(
-        #     f"{Path(output_file_prefix).stem}-"
-        #     f"{user}-"
-        #     "contributor-"
-        #     f"{datetime.now().isoformat(timespec='minutes')}.html"
-        # )
-        # click.echo(f"\nWriting contributor metrics as HTML to {user_metrics_filename}")
-        # file_io.write_to_output(
-        #     user_metrics_filename,
-        #     tabulate(contributor_counts, headers="keys", tablefmt="html"),
-        # )
+        header = f"Contributions by week for [{user}]"
+        click.echo(f"\n{'-' * len(header)}")
+        click.echo(header)
+        click.echo("-" * len(header))
+        click.echo(tabulate(contributor_counts, tablefmt=table_format, headers="keys"))
+
+        user_metrics_filename = METRICS_OUTPUT.joinpath(
+            f"{Path(output_file_prefix).stem}-"
+            f"{user}-"
+            "contributor-"
+            f"{datetime.now().isoformat(timespec='minutes')}.html"
+        )
+        click.echo(f"\nWriting contributor metrics as HTML to {user_metrics_filename}")
+        file_io.write_to_output(
+            user_metrics_filename,
+            tabulate(contributor_counts, headers="keys", tablefmt="html"),
+        )
