@@ -193,31 +193,31 @@ def contributor_actions(user, num_weeks):
         # want:
         # {'week': [from0, from1, from2]
         #  'pullRequest': [{'repo': 1}, {}, {'other': 2}]}
-    org_repos = ["robottelo", "satellite6-upgrade", "airgun", "nailgun", "manifester", "testfm", "broker",
-                 "robottelo-mock-service", "fedorapeople-repos", "automation-tools", "repo-metrics",
-                 "foreman_templates", "robottelo-ci", "betelgeuse", "testimony", "userscripts", "bugwrangler",
-                 "robozilla", "5minute", "snap-guest", "ansible-satellite6", "GreenTea", "docs",
-                 "reviewertest1", "satellite-populate", "hammer", "RFauxFactory", "robottelo_reporter",
-                 "sat6helper", "spacewalk-tests", "katellovirt", "blinker_herald", "katello-rapidnode",
-                 "puppet-robottelo_slave", "docker", "automation-tools-docker", "robottelo-docker",
-                 "augeasproviders", "bem-te-vi", "robottelo-ircbot", "ontic", "abugadro", "staplegun"]
-    total_commits = 0
-    total_pr_reviews = 0
+    # org_repos = ["robottelo", "satellite6-upgrade", "airgun", "nailgun", "manifester", "testfm", "broker",
+    #              "robottelo-mock-service", "fedorapeople-repos", "automation-tools", "repo-metrics",
+    #              "foreman_templates", "robottelo-ci", "betelgeuse", "testimony", "userscripts", "bugwrangler",
+    #              "robozilla", "5minute", "snap-guest", "ansible-satellite6", "GreenTea", "docs",
+    #              "reviewertest1", "satellite-populate", "hammer", "RFauxFactory", "robottelo_reporter",
+    #              "sat6helper", "spacewalk-tests", "katellovirt", "blinker_herald", "katello-rapidnode",
+    #              "puppet-robottelo_slave", "docker", "automation-tools-docker", "robottelo-docker",
+    #              "augeasproviders", "bem-te-vi", "robottelo-ircbot", "ontic", "abugadro", "staplegun"]
+    # total_commits = 0
+    # total_pr_reviews = 0
+    #
+    # # Removing repos that are not in the org
+    # commit_repos = list(user_contributions['commit'].keys())
+    # review_repos = list(user_contributions['pullRequestReview'].keys())
+    # for repos in [commit_repos, review_repos]:
+    #     for repo in repos:
+    #         if repo not in org_repos:
+    #             del user_contributions['commit' if repos == commit_repos else 'pullRequestReview'][repo]
+    #
+    # for commit in user_contributions['commit'].values():
+    #     total_commits += (commit if commit else 0)
+    # for review in user_contributions['pullRequestReview'].values():
+    #     total_pr_reviews += (review if review else 0)
 
-    # Removing repos that are not in the org
-    commit_repos = list(user_contributions['commit'].keys())
-    review_repos = list(user_contributions['pullRequestReview'].keys())
-    for repos in [commit_repos, review_repos]:
-        for repo in repos:
-            if repo not in org_repos:
-                del user_contributions['commit' if repos == commit_repos else 'pullRequestReview'][repo]
-
-    for commit in user_contributions['commit'].values():
-        total_commits += (commit if commit else 0)
-    for review in user_contributions['pullRequestReview'].values():
-        total_pr_reviews += (review if review else 0)
-
-    dated_counts["week"].append(from_date.strftime(DATE_FMT))
+    # dated_counts["week"].append(from_date.strftime(DATE_FMT))
 
     # for cont_type, cont_repos in user_contributions.items():
     #     # Convert the raw value dicts to table cell values
@@ -227,4 +227,6 @@ def contributor_actions(user, num_weeks):
     #         )
     #     else:
     #         dated_counts[cont_type].append("---")
-    return Box(pr_review=total_pr_reviews, commit=total_commits)
+    # return Box(pr_review=total_pr_reviews, commit=total_commits)
+
+    return user_contributions

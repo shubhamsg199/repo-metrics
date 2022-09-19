@@ -145,10 +145,8 @@ def repo_pr_metrics(org, repo, output_file_prefix, pr_count, table_format):
 @table_format_option
 def reviewer_actions(org, repo, output_file_prefix, pr_count, table_format):
     """ Generate metrics for tier reviewer groups, and general contributors
-
     Will collect tier reviewer teams from the github org
     Tier reviewer teams will read from settings file, and default to what SatelliteQE uses
-
     """
     for repo_name in repo:
         click.echo(f"Collecting metrics for {org}/{repo_name} ...")
